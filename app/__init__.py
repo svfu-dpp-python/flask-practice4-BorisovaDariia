@@ -2,6 +2,7 @@ from flask import Flask
 
 from .models import db, migrate
 from . import views
+from .admin import admin, StudentModelView
 
 
 def create_app():
@@ -21,5 +22,8 @@ def create_app():
 
     app.add_url_rule("/login/", view_func=views.login_page, methods=["GET", "POST"])
     app.add_url_rule("/logout/", view_func=views.logout)
+
+    admin.init_app(app)
+    admin.add_view(StudentModelView(models.Student, db.session))
 
     return app
